@@ -37,7 +37,8 @@ Once the project moves into development, the press release can be used as a touc
   >Or maybe you've just been feeling off lately and don't know why. Use SpeakToMe.ai as a diary and track your mood over time.
 
 ## Quote from You ##
-  > Our mission is to make AI accessible to everyone from bootstrapped entrepreneurs to enterprise institutions. -Andy G. -Founder
+  > Our mission is to make AI accessible to everyone from bootstrapped entrepreneurs to enterprise institutions.
+  -Andy G. -Founder
 
 ## How to Get Started ##
   > We're in Beta so everything is free! Get started at SpeakToMe.ai
