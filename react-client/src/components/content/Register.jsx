@@ -1,33 +1,12 @@
 import React from 'react';
 
 class Register extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      username: "",
-      pw: "",
-      name: "",
-      email: ""
-    }
-
-    this.handleSubmit.bind(this);
-  }
 
 
-  onInputChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-
-    console.log('submit')
-  }
 
   render() {
+    const { onInputChange, handleSubmit } = this.props;
+
     return (
       <div>
         <form>
@@ -36,7 +15,7 @@ class Register extends React.Component {
               type="text"
               name="name"
               placeholder="Enter your First Name"
-              onChange={this.onInputChange.bind(this)}
+              onChange={onInputChange}
             >
             </input>
           </label>
@@ -46,7 +25,7 @@ class Register extends React.Component {
               type="text"
               name="email"
               placeholder="Enter your User Email"
-              onChange={this.onInputChange.bind(this)}
+              onChange={onInputChange('email')}
             >
             </input>
           </label>
@@ -56,7 +35,7 @@ class Register extends React.Component {
               type="text"
               name="username"
               placeholder="Enter your User Name"
-              onChange={this.onInputChange.bind(this)}
+              onChange={onInputChange('username')}
             >
             </input>
           </label>
@@ -66,13 +45,12 @@ class Register extends React.Component {
               type="password"
               name="pw"
               placeholder="Enter your Password"
-              value={this.state.pw}
-              onChange={this.onInputChange.bind(this)}
+              onChange={onInputChange('pw')}
             >
             </input>
           </label>
           <br />
-          <button onClick={this.handleSubmit}>Register</button>
+          <button name={'register'} onClick={handleSubmit('Register')}>Register</button>
         </form>
       </div>
     )

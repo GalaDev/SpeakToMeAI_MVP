@@ -1,31 +1,10 @@
 import React from 'react';
 
 class Login extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      username: "",
-      pw: ""
-    }
-
-    this.handleSubmit.bind(this);
-  }
-
-
-  onInputChange(e) {
-    this.setState({
-      [e.target.name]: e.target.value
-    })
-  }
-
-  handleSubmit(e) {
-    e.preventDefault();
-
-    console.log('submit')
-  }
 
   render() {
+    const { onInputChange, handleSubmit } = this.props;
+
     return (
       <div>
         <form>
@@ -34,7 +13,7 @@ class Login extends React.Component {
               type="text"
               name="username"
               placeholder="Enter your User Name"
-              onChange={this.onInputChange.bind(this)}
+              onChange={onInputChange('username')}
             >
             </input>
           </label>
@@ -44,13 +23,12 @@ class Login extends React.Component {
               type="password"
               name="pw"
               placeholder="Enter your Password"
-              value={this.state.pw}
-              onChange={this.onInputChange.bind(this)}
+              onChange={onInputChange('pw')}
             >
             </input>
           </label>
           <br />
-          <button onClick={this.handleSubmit}>Login</button>
+          <button name={'login'} onClick={handleSubmit('login')}>Login</button>
         </form>
       </div>
     )
