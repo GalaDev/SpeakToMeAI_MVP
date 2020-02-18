@@ -1,23 +1,29 @@
 import React, { Fragment } from 'react';
+
+//Components
 import { Header, Footer } from './layouts/index.jsx';
 import Login from './content/Login.jsx';
 import Register from './content/Register.jsx';
 import MainPage from './content/MainPage.jsx';
 
+//Helpers
+import serverRequest from '../helpers/serverRequest.js';
+
+//App Component
 class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      username: "",
-      pw: "",
+      username: "user",
+      pw: "1234",
       name: "Andy",
       email: "",
       title: "",
       inputData: "",
       reportData: "",
       savedReports: [],
-      isLoggedIn: true
+      isLoggedIn: false
     }
 
     this.onInputChange.bind(this);
@@ -38,14 +44,22 @@ class App extends React.Component {
   }
 
   handleSubmit(input) {
+
     return (e) => {
       let submitType = e.target.name;
 
+
       if (submitType === 'register') {
         //Make ajax post request to server for '/register'
+        serverRequest("POST", submitType, { name: "gala" }, (res) => {
+          console.log(res)
 
-      } else {
+        })
+      } else if (submitType === 'login') {
         //Make ajax get request to server for '/login'
+        serverRequest("POST", submitType, { username: 'user', pw: 'password' }, (res) => {
+          console.log(res)
+        })
       }
     }
   }
