@@ -4,7 +4,7 @@ var path = require('path');
 var authRoutes = require('./routes/routes.js');
 
 //Connect to mongoDb
-var mongoConnect = require('./database-mongo');
+var mongoConnect = require('./database-mongo/database.js').mongoConnect;
 
 //Creates server
 var app = express();
@@ -23,8 +23,8 @@ app.use(authRoutes)
 
 
 //Initializes MongoDb
-mongoConnect((client) => {
-  console.log(client)
+mongoConnect(() => {
+
 
   //Runs server
   app.listen(3000, () => {
