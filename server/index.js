@@ -1,24 +1,33 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-// UNCOMMENT THE DATABASE YOU'D LIKE TO USE
-// var items = require('../database-mysql');
-// var items = require('../database-mongo');
+var path = require('path');
+var authRoutes = require('./routes/routes.js');
 
+//Connect to mongoDb
+var mongoConnect = require('./database-mongo');
+
+//Creates server
 var app = express();
 
+//Allows use of req.body object
+app.use(bodyParser.urlencoded({ extended: true }));
+
+//Allows json on req.body object
+app.use(express.json());
+
+//Serves compiled html/react file from client
 app.use(express.static(__dirname + '/../react-client/dist'));
 
-app.get('/items', function (req, res) {
-  items.selectAll(function (err, data) {
-    if (err) {
-      res.sendStatus(500);
-    } else {
-      res.json(data);
-    }
-  });
-});
+//Refereces post requests from client from routes/routes.js file
+app.use(authRoutes)
 
-app.listen(3000, function () {
-  console.log('listening on port 3000!');
-});
 
+//Initializes MongoDb
+mongoConnect((client) => {
+  console.log(client)
+
+  //Runs server
+  app.listen(3000, () => {
+    console.log('listening on port 3000')
+  })
+})
