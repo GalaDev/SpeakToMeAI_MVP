@@ -2,7 +2,7 @@ const Product = require('../models/Report.js');
 
 
 const saveReportController = (req, res) => {
-  const { title, inputData, reportData } = req.body;
+  const { title, inputData, reportData, email } = req.body;
 
   const report = new Report({
     title: title,
