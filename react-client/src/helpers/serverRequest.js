@@ -3,11 +3,12 @@ const serverRequest = (type, urlEnd, state, callback) => {
     type: type,
     url: "http://localhost:3000/" + urlEnd,
     data: state,
-    success: function (data) {
-      callback(data);
+    success: (data) => {
+      callback(null, data);
     },
     error: function (err) {
       console.log(err);
+      callback(err)
     }
   });
 }
