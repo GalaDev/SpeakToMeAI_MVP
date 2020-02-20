@@ -27,17 +27,8 @@ app.use(authRoutes);
 app.use(mainPageRoutes);
 
 
-//Initializes MongoDb
-// mongoConnect(() => {
-
-//   //Runs server
-//   app.listen(3000, () => {
-//     console.log('listening on port 3000')
-//   })
-// })
-
 //Initializes Mongoose
-mongoose.connect('mongodb+srv://rootuser:rootuser@cluster0-zffv3.mongodb.net/root?retryWrites=true&w=majority', { useUnifiedTopology: true, useNewUrlParser: true })
+mongoose.connect('mongodb+srv://rootuser:rootuser@cluster0-zffv3.mongodb.net/root', { useUnifiedTopology: true, useNewUrlParser: true })
   .then(result => {
     app.listen(3000, () => {
       console.log('listening on port 3000');
