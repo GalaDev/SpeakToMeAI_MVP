@@ -17,7 +17,7 @@ const registerController = (req, res) => {
       if (userDoc) {
         console.log(userDoc)
         console.log('User already exists')
-        return res.send('false');
+        return res.send(JSON.stringify({ isLoggedIn: false }));
       }
 
       return bcrypt.hash(pw, 12)
@@ -33,8 +33,11 @@ const registerController = (req, res) => {
           return user.save();
         })
         .then(result => {
-          console.log('New user created')
-          res.end('true');
+          const { name, savedReports } = result;
+          let newResult = { name, savedReports, isLoggedIn: true };
+          newResult = JSON.stringify(newResult);
+
+          res.end(newResult);
         })
     })
     .catch(err => {
@@ -49,7 +52,7 @@ const loginController = (req, res) => {
     .then(user => {
       if (!user) {
         console.log('user not found')
-        return res.send('false')
+        return res.send(JSON.stringify({ isLoggedIn: false }))
       }
 
       //Compares input pw to pw stored in DB
@@ -59,14 +62,17 @@ const loginController = (req, res) => {
           if (doMatch) {
             //change value of isLoggedIn object on client
             console.log('success, loggedin')
-            return res.send('true')
+            const { name, savedReports } = user;
+            let userData = { name, savedReports, isLoggedIn: true };
+
+            return res.send(JSON.stringify(userData))
           }
           console.log('username found but password incorrect')
-          return res.send('false')
+          return res.send(JSON.stringify({ isLoggedIn: false }))
         })
         .catch(err => {
           console.log(err);
-          res.send('false')
+          res.send(JSON.stringify({ isLoggedIn: false }))
         })
     })
 };

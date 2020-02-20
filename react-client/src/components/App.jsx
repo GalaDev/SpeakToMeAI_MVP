@@ -29,7 +29,9 @@ class App extends React.Component {
 
     this.onInputChange = this.onInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    this.logoutButton = this.logoutButton.bind(this);
+    // this.logoutButton = this.logoutButton.bind(this);
+    // this.onDataSave = this.onDataSave.bind(this);
+    // this.onDataSubmit = this.onDataSubmit.bind(this);
   }
 
   //
@@ -43,13 +45,9 @@ class App extends React.Component {
 
   }
 
-  onDataSubmit(e) {
-    // console.log("from on data submit")
-  }
-
-  onDataSave(e) {
-    // console.log('from on data save')
-  }
+  // onDataSave(e) {
+  //   // console.log('from on data save')
+  // }
 
   logoutButton(e) {
     e.preventDefault();
@@ -72,10 +70,14 @@ class App extends React.Component {
       if (submitType === 'register') {
         //Make ajax post request to server for '/register'
         serverRequest("POST", submitType, this.state, (err, res) => {
-          if (res === 'true') {
+          const userData = JSON.parse(res)
+
+          console.log(userData)
+          if (userData.isLoggedIn === true) {
             //========NEED TO UPDATE STATE WITH DATA FROM SERVER==============
             this.setState({
-              isLoggedIn: true
+              isLoggedIn: true,
+              savedReports: userData.savedReports
             });
           } else {
             alert('Invalid Registeration, check if email is not in use!')
@@ -85,17 +87,26 @@ class App extends React.Component {
 
         //Make ajax get request to server for '/login'
         serverRequest("POST", submitType, this.state, (err, res) => {
-          if (res === 'true') {
+          const userData = JSON.parse(res);
+
+          if (userData.isLoggedIn) {
             this.setState({
-              isLoggedIn: true
-            })
+              isLoggedIn: true,
+              name: userData.name,
+              savedReports: userData.savedReports
+            });
           } else {
             alert('Invalid login! Try again')
           }
         })
-      } else if (submitType === 'main-page') {
-        serverRequest("POST", submitType, { email: 'test@mail.com', title: 'titleData', inputData: 'input', reportData: 'report Data' }, (err, res) => {
-          console.log(res)
+      } else if (submitType === 'main-page-data-submit') {
+
+      } else if (submitType === 'main-page-data-save') {
+
+        serverRequest("POST", submitType, this.state, (err, res) => {
+          if (res === 'true') {
+            console.log('data saved to data base')
+          }
         })
       }
     }
@@ -125,7 +136,7 @@ class App extends React.Component {
 
           <MainPage
             onDataSave={this.onDataSave}
-            onDataSubmit={this.onDataSubmit}
+            handleSubmit={this.handleSubmit}
             onInputChange={this.onInputChange}
             values={values}
           ></MainPage>

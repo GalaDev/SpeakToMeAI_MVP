@@ -4,7 +4,8 @@ import React from 'react';
 const MainPage = (props) => {
 
   const { name, reportData } = props.values;
-  const { onInputChange, onDataSubmit, onDataSave } = props
+  console.log("from main-page", name)
+  const { onInputChange, handleSubmit } = props
 
   return (
     <div>
@@ -16,7 +17,7 @@ const MainPage = (props) => {
             type="text"
             name="title"
             placeholder="Enter Title..."
-            onChange={onInputChange}
+            onChange={onInputChange('title')}
           ></input>
         </label>
         <br />
@@ -26,19 +27,19 @@ const MainPage = (props) => {
             type="tex"
             name="inputData"
             placeholder="Enter text or hit record"
-            onChange={onInputChange}
+            onChange={onInputChange('inputData')}
           />
         </label>
         <br />
         <button>Speak</button>
         <button>Stop</button>
         <br />
-        <button name={'submit-data'} onClick={onDataSubmit}>Submit Data</button>
+        <button name={'main-page-data-submit'} onClick={handleSubmit}>Submit Data</button>
       </form>
       <br />
       <h2>Report Data:</h2>
       <p className="report-data">{reportData}</p>
-      <button name={'save-data'} onClick={onDataSave}>Save Data</button>
+      <button name={'main-page-data-save'} onClick={handleSubmit}>Save Data</button>
       <br />
       <div className="list-data">
         <ol className="data-list">

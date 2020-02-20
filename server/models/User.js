@@ -9,6 +9,22 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
+const reportSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  inputData: {
+    type: String,
+    required: true
+  },
+  reportData: {
+    type: Object,
+    required: false
+  }
+})
+
+
 const userSchema = new Schema({
   name: {
     type: String,
@@ -26,10 +42,7 @@ const userSchema = new Schema({
     type: String,
     required: true
   },
-  savedReports: {
-    type: Array,
-    required: true
-  }
+  savedReports: [reportSchema]
 });
 
 // userSchema.methods.generateHash = function (password) {
