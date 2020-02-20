@@ -17,9 +17,9 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export default function Header() {
+export default function Header(props) {
   const classes = useStyles();
-
+  console.log('from Header', props.isLoggedIn)
   return (
     <div className={classes.root}>
       <AppBar position="static" >
@@ -30,7 +30,7 @@ export default function Header() {
           <Typography variant="h4" className={classes.title}>
             SpeakToMe.ai
           </Typography>
-          <Button color="inherit">Login</Button>
+          <Button color="inherit" onClick={props.logoutButton}>{props.isLoggedIn === true ? 'Logout' : 'Login'}</Button>
         </Toolbar>
       </AppBar>
     </div>

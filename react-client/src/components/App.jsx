@@ -15,25 +15,32 @@ class App extends React.Component {
     super(props);
 
     this.state = {
-      username: "testUser_1",
-      pw: "12345",
-      name: "TestU",
-      email: "test@test.com",
+      username: "",
+      pw: "",
+      name: "",
+      email: "",
       title: "",
       inputData: "",
       reportData: "",
       savedReports: [],
-      isLoggedIn: true,
-      confirmPassword: false
+      isLoggedIn: false,
+      loginButtonText: 'Login'
     }
 
-    this.onInputChange.bind(this);
-    this.handleSubmit.bind(this);
+    this.onInputChange = this.onInputChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.logoutButton = this.logoutButton.bind(this);
   }
 
   //
-  onInputChange(e) {
-    // console.log("from on input change")
+  onInputChange(input) {
+    return (e) => {
+      e.preventDefault();
+      this.setState({
+        [e.target.name]: e.target.value
+      })
+    }
+
   }
 
   onDataSubmit(e) {
@@ -44,6 +51,18 @@ class App extends React.Component {
     // console.log('from on data save')
   }
 
+  logoutButton(e) {
+    e.preventDefault();
+
+    console.log("logout button clicked")
+    //Logs User out
+    if (this.state.isLoggedIn) {
+      this.setState({
+        isLoggedIn: false
+      });
+    }
+  }
+
   handleSubmit(input) {
 
     return (e) => {
@@ -52,15 +71,27 @@ class App extends React.Component {
 
       if (submitType === 'register') {
         //Make ajax post request to server for '/register'
-        serverRequest("POST", submitType, { name: "TestName19", username: "TestUserName19", email: "test19@test.com", pw: "test19pw" }, (err, res) => {
+        serverRequest("POST", submitType, this.state, (err, res) => {
           if (res === 'true') {
             //========NEED TO UPDATE STATE WITH DATA FROM SERVER==============
+            this.setState({
+              isLoggedIn: true
+            });
+          } else {
+            alert('Invalid Registeration, check if email is not in use!')
           }
         })
       } else if (submitType === 'login') {
+
         //Make ajax get request to server for '/login'
-        serverRequest("POST", submitType, { email: 'test3@test.com', pw: 'test3pw' }, (err, res) => {
-          console.log(res)
+        serverRequest("POST", submitType, this.state, (err, res) => {
+          if (res === 'true') {
+            this.setState({
+              isLoggedIn: true
+            })
+          } else {
+            alert('Invalid login! Try again')
+          }
         })
       } else if (submitType === 'main-page') {
         serverRequest("POST", submitType, { email: 'test@mail.com', title: 'titleData', inputData: 'input', reportData: 'report Data' }, (err, res) => {
@@ -78,7 +109,7 @@ class App extends React.Component {
     if (!isLoggedIn) {
       return (
         <Fragment>
-          <Header></Header>
+          <Header isLoggedIn={isLoggedIn} logoutButton={this.logoutButton}></Header>
 
           <Login onInputChange={this.onInputChange} handleSubmit={this.handleSubmit}></Login>
           <br />

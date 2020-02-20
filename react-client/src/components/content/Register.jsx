@@ -15,7 +15,7 @@ class Register extends React.Component {
               type="text"
               name="name"
               placeholder="Enter your First Name"
-              onChange={onInputChange}
+              onChange={onInputChange('name')}
             >
             </input>
           </label>
@@ -50,7 +50,7 @@ class Register extends React.Component {
             </input>
           </label>
           <br />
-          <button name={'register'} onClick={handleSubmit('Register')}>Register</button>
+          <button name={'register'} onClick={handleSubmit('register')}>Register</button>
         </form>
       </div>
     )
