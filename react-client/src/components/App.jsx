@@ -9,6 +9,9 @@ import MainPage from './content/MainPage.jsx';
 //Helpers
 import serverRequest from '../helpers/serverRequest.js';
 
+//API's
+
+
 //App Component
 class App extends React.Component {
   constructor(props) {
@@ -21,7 +24,7 @@ class App extends React.Component {
       email: "",
       title: "",
       inputData: "",
-      reportData: "",
+      score: "",
       savedReports: [],
       isLoggedIn: false,
       loginButtonText: 'Login'
@@ -45,30 +48,31 @@ class App extends React.Component {
 
   }
 
+
+  //******FIX BUG ON DOUBLE SUBMIT******
   onDataSave(e) {
     e.preventDefault();
     let urlEnd = e.target.name;
-    let sendData = this.state;
-    sendData.savedReports.push({
-      title: 'report1',
-      inputData: 'Input Text Data',
-      reportData: { sentiment: 3, words: 'hello' }
-    });
 
-    console.log('Object sendData', sendData)
 
-    sendData.savedReports = JSON.stringify(sendData.savedReports)
-    console.log("Stringifed sendData", sendData)
+    let reqObj = {};
+    reqObj.savedReports = this.state.savedReports === null ? '[]' : JSON.stringify(this.state.savedReports);
 
-    serverRequest("POST", urlEnd, sendData, (err, res) => {
+    reqObj.inputData = this.state.inputData;
+    reqObj.username = this.state.username;
+    reqObj.title = this.state.title;
 
+    serverRequest("POST", urlEnd, reqObj, (err, res) => {
       if (err) {
         console.log(err)
       }
 
-      console.log(res)
-    })
+      let savedReportsObj = JSON.parse(res);
 
+      this.setState({
+        savedReports: savedReportsObj.savedReports
+      });
+    })
   }
 
   logoutButton(e) {
@@ -95,9 +99,7 @@ class App extends React.Component {
 
           const userData = JSON.parse(res)
 
-          console.log(userData)
           if (userData.isLoggedIn === true) {
-            //========NEED TO UPDATE STATE WITH DATA FROM SERVER==============
             this.setState({
               isLoggedIn: true,
               savedReports: userData.savedReports
