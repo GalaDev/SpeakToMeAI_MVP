@@ -30,7 +30,7 @@ class App extends React.Component {
     this.onInputChange = this.onInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     // this.logoutButton = this.logoutButton.bind(this);
-    // this.onDataSave = this.onDataSave.bind(this);
+    this.onDataSave = this.onDataSave.bind(this);
     // this.onDataSubmit = this.onDataSubmit.bind(this);
   }
 
@@ -45,9 +45,31 @@ class App extends React.Component {
 
   }
 
-  // onDataSave(e) {
-  //   // console.log('from on data save')
-  // }
+  onDataSave(e) {
+    e.preventDefault();
+    let urlEnd = e.target.name;
+    let sendData = this.state;
+    sendData.savedReports.push({
+      title: 'report1',
+      inputData: 'Input Text Data',
+      reportData: { sentiment: 3, words: 'hello' }
+    });
+
+    console.log('Object sendData', sendData)
+
+    sendData.savedReports = JSON.stringify(sendData.savedReports)
+    console.log("Stringifed sendData", sendData)
+
+    serverRequest("POST", urlEnd, sendData, (err, res) => {
+
+      if (err) {
+        console.log(err)
+      }
+
+      console.log(res)
+    })
+
+  }
 
   logoutButton(e) {
     e.preventDefault();
@@ -66,10 +88,11 @@ class App extends React.Component {
     return (e) => {
       e.preventDefault();
       let submitType = e.target.name;
-
+      console.log('from handle submit-type', submitType)
       if (submitType === 'register') {
         //Make ajax post request to server for '/register'
         serverRequest("POST", submitType, this.state, (err, res) => {
+
           const userData = JSON.parse(res)
 
           console.log(userData)
@@ -101,13 +124,6 @@ class App extends React.Component {
         })
       } else if (submitType === 'main-page-data-submit') {
 
-      } else if (submitType === 'main-page-data-save') {
-
-        serverRequest("POST", submitType, this.state, (err, res) => {
-          if (res === 'true') {
-            console.log('data saved to data base')
-          }
-        })
       }
     }
   }

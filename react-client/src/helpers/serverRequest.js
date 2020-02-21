@@ -9,7 +9,7 @@ const serverRequest = (type, urlEnd, state, callback) => {
       callback(null, data);
     },
     error: function (err) {
-      console.log(err);
+      console.log("Error message from AJAX", err);
       callback(err)
     }
   });

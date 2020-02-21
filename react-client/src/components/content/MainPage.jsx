@@ -5,7 +5,7 @@ const MainPage = (props) => {
 
   const { name, reportData } = props.values;
   console.log("from main-page", name)
-  const { onInputChange, handleSubmit } = props
+  const { onInputChange, onDataSave } = props
 
   return (
     <div>
@@ -34,12 +34,12 @@ const MainPage = (props) => {
         <button>Speak</button>
         <button>Stop</button>
         <br />
-        <button name={'main-page-data-submit'} onClick={handleSubmit}>Submit Data</button>
+        {/* <button name={'main-page-data-submit'} onClick={handleSubmit}>Submit Data</button> */}
       </form>
       <br />
       <h2>Report Data:</h2>
       <p className="report-data">{reportData}</p>
-      <button name={'main-page-data-save'} onClick={handleSubmit}>Save Data</button>
+      <button name={'main-page-data-save'} onClick={onDataSave}>Save Data</button>
       <br />
       <div className="list-data">
         <ol className="data-list">
