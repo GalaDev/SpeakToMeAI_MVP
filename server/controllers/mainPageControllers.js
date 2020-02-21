@@ -32,7 +32,7 @@ const saveReportController = (req, res) => {
           return user.savedReports
         })
         .then(updatedSavedReports => {
-          res.send(JSON.stringify({ savedReports: updatedSavedReports, score: score }))
+          res.send(JSON.stringify({ savedReports: updatedSavedReports, score: score, inputData: "", title: "" }))
         })
     })
     .catch(err => {
