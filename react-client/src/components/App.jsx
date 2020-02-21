@@ -9,6 +9,8 @@ import MainPage from './content/MainPage.jsx';
 //Helpers
 import serverRequest from '../helpers/serverRequest.js';
 
+//API's
+
 
 //App Component
 class App extends React.Component {
@@ -34,6 +36,13 @@ class App extends React.Component {
     this.logoutButton = this.logoutButton.bind(this);
   }
 
+  componentDidMount() {
+    this.setState({
+      title: '',
+      inputData: '',
+      score: 0
+    })
+  }
 
   onInputChange(input) {
     return (e) => {
@@ -42,7 +51,6 @@ class App extends React.Component {
         [e.target.name]: e.target.value
       })
     }
-
   }
 
   renderReport() {
@@ -142,7 +150,7 @@ class App extends React.Component {
     return (e) => {
       e.preventDefault();
       let submitType = e.target.name;
-      console.log('from handle submit-type', submitType)
+
       if (submitType === 'register') {
         //Make ajax post request to server for '/register'
         serverRequest("POST", submitType, this.state, (err, res) => {
@@ -171,7 +179,10 @@ class App extends React.Component {
               savedReports: userData.savedReports
             }, () => {
               this.setState({
-                renderedReports: this.renderReport(this.state.savedReports)
+                renderedReports: this.renderReport(this.state.savedReports),
+                title: '',
+                inputData: '',
+                score: ''
               })
             });
           } else {
@@ -180,7 +191,10 @@ class App extends React.Component {
         })
       } else if (submitType === 'update-data') {
         this.setState({
-          renderedReports: this.renderReport(this.state.savedReports)
+          renderedReports: this.renderReport(this.state.savedReports),
+          title: this.state.title,
+          inputData: this.state.inputData,
+          score: this.state.score
         });
       }
     }
@@ -198,8 +212,6 @@ class App extends React.Component {
           <Login onInputChange={this.onInputChange} handleSubmit={this.handleSubmit}></Login>
           <br />
           <Register onInputChange={this.onInputChange} handleSubmit={this.handleSubmit}></Register>
-
-          <Footer></Footer>
         </Fragment>
       )
     } else {
@@ -211,10 +223,9 @@ class App extends React.Component {
             onDataSave={this.onDataSave}
             handleSubmit={this.handleSubmit}
             onInputChange={this.onInputChange}
+            toggleListen={this.toggleListen}
             values={values}
           ></MainPage>
-
-          <Footer></Footer>
         </Fragment >
       )
     }

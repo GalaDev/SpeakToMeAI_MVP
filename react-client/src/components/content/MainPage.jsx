@@ -1,11 +1,9 @@
 import React from 'react';
 
-
 const MainPage = (props) => {
 
   const { name, reportData, renderedReports } = props.values;
-
-  const { onInputChange, onDataSave, handleSubmit } = props
+  const { onInputChange, onDataSave, handleSubmit, toggleListen } = props
 
   return (
     <div>
@@ -31,8 +29,6 @@ const MainPage = (props) => {
           />
         </label>
         <br />
-        <button>Speak</button>
-        <button>Stop</button>
         <br />
         <button name={'update-data'} onClick={handleSubmit('update-data')}>Refresh Data</button>
       </form>
