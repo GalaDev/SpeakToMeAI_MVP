@@ -1,25 +1,22 @@
-const Product = require('../models/Report.js');
+const User = require('../models/User.js');
 
 
 const saveReportController = (req, res) => {
-  const { title, inputData, reportData, email } = req.body;
 
-  const report = new Report({
-    title: title,
-    inputData: inputData,
-    reportData: reportData
-  });
+  let { username, savedReports, isLoggedIn } = req.body;
+  savedReports = JSON.parse(savedReports);
 
-
-  report
-    .save()
-    .then(report => {
-      console.log('Report saved to Database!');
-      res.send('Report saved, from server');
+  User.findOneAndUpdate({ username: username }, { savedReports: savedReports })
+    .then(result => {
+      res.end("success");
     })
     .catch(err => {
-      console.log("Err", err);
-    });
+      console.log(err)
+    })
+
+  res.send(JSON.stringify({ isLoggedIn: true }))
+
+
 };
 
 const getReportsController = (req, res) => {

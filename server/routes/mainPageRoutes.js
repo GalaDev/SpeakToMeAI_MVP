@@ -3,9 +3,9 @@ var { saveReportController, getReportsController } = require('../controllers/mai
 
 const router = express.Router();
 
-router.post('/main-page', saveReportController);
+router.post('/main-page-data-save', saveReportController);
 
-router.get('/main-page', getReportsController);
+// router.get('/main-page', getReportsController);
 
 
 module.exports = router;

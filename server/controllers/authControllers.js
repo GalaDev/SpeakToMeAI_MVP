@@ -36,7 +36,6 @@ const registerController = (req, res) => {
           const { name, savedReports } = result;
           let newResult = { name, savedReports, isLoggedIn: true };
           newResult = JSON.stringify(newResult);
-
           res.end(newResult);
         })
     })
@@ -48,6 +47,9 @@ const registerController = (req, res) => {
 const loginController = (req, res) => {
   const { username, pw } = req.body;
   console.log('username from client', username)
+
+
+
   User.findOne({ username: username })
     .then(user => {
       if (!user) {
