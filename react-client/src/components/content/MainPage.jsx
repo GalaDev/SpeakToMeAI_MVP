@@ -3,9 +3,9 @@ import React from 'react';
 
 const MainPage = (props) => {
 
-  const { name, reportData } = props.values;
-  console.log("from main-page", name)
-  const { onInputChange, onDataSave } = props
+  const { name, reportData, renderedReports } = props.values;
+
+  const { onInputChange, onDataSave, handleSubmit } = props
 
   return (
     <div>
@@ -34,7 +34,7 @@ const MainPage = (props) => {
         <button>Speak</button>
         <button>Stop</button>
         <br />
-        {/* <button name={'main-page-data-submit'} onClick={handleSubmit}>Submit Data</button> */}
+        <button name={'update-data'} onClick={handleSubmit('update-data')}>Refresh Data</button>
       </form>
       <br />
       <h2>Report Data:</h2>
@@ -42,9 +42,7 @@ const MainPage = (props) => {
       <button name={'main-page-data-save'} onClick={onDataSave}>Save Data</button>
       <br />
       <div className="list-data">
-        <ol className="data-list">
-
-        </ol>
+        {renderedReports}
       </div>
     </div>
   )

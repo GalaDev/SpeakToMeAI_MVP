@@ -9,8 +9,6 @@ import MainPage from './content/MainPage.jsx';
 //Helpers
 import serverRequest from '../helpers/serverRequest.js';
 
-//API's
-
 
 //App Component
 class App extends React.Component {
@@ -27,17 +25,16 @@ class App extends React.Component {
       score: "",
       savedReports: [],
       isLoggedIn: false,
-      loginButtonText: 'Login'
+      renderedReports: []
     }
 
     this.onInputChange = this.onInputChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
-    // this.logoutButton = this.logoutButton.bind(this);
     this.onDataSave = this.onDataSave.bind(this);
-    // this.onDataSubmit = this.onDataSubmit.bind(this);
+    this.logoutButton = this.logoutButton.bind(this);
   }
 
-  //
+
   onInputChange(input) {
     return (e) => {
       e.preventDefault();
@@ -48,12 +45,52 @@ class App extends React.Component {
 
   }
 
+  renderReport() {
 
-  //******FIX BUG ON DOUBLE SUBMIT******
+    const getTextResult = (score) => {
+
+      const textResultObj = {
+        low: 'Very Negative',
+        lowMed: 'Negative',
+        netural: 'Netural',
+        medHigh: "Positive",
+        high: 'Very Positive',
+        invalid: "Invalid Score"
+      };
+
+      let textResult = ''
+      if (score >= -1 && score < -0.5) {
+        textResult = textResultObj.low;
+      } else if (score >= -0.5 && score < -0.01) {
+        textResult = textResultObj.lowMed;
+      } else if (score >= -0.01 && score <= 0.01) {
+        textResult = textResultObj.netural;
+      } else if (score > 0.01 && score < 0.5) {
+        textResult = textResultObj.medHigh;
+      } else if (score >= 0.5 && score <= 1) {
+        textResult = textResultObj.high;
+      } else {
+        textResult = textResultObj.invalid;
+      }
+
+      return textResult;
+    }
+
+    const reportDivs = this.state.savedReports.map((report, index) => {
+      return <div className='report-component' key={index}>
+        <div className="report-title">{report.title}</div>
+        <div className="score">Score Value: {report.score}</div>
+        <div className="text-result"> {getTextResult(report.score)}</div>
+        <hr></hr>
+      </div>
+    });
+
+    return reportDivs;
+  }
+
   onDataSave(e) {
     e.preventDefault();
     let urlEnd = e.target.name;
-
 
     let reqObj = {};
     reqObj.savedReports = this.state.savedReports === null ? '[]' : JSON.stringify(this.state.savedReports);
@@ -62,28 +99,41 @@ class App extends React.Component {
     reqObj.username = this.state.username;
     reqObj.title = this.state.title;
 
+
     serverRequest("POST", urlEnd, reqObj, (err, res) => {
       if (err) {
         console.log(err)
       }
 
       let savedReportsObj = JSON.parse(res);
-
+      let newRenderedReports = this.renderReport(savedReportsObj.savedReports)
       this.setState({
-        savedReports: savedReportsObj.savedReports
-      });
-    })
+        savedReports: savedReportsObj.savedReports,
+        renderedReports: newRenderedReports
+      })
+    });
   }
 
   logoutButton(e) {
     e.preventDefault();
 
+    const revertState = {
+      username: "",
+      pw: "",
+      name: "",
+      email: "",
+      title: "",
+      inputData: "",
+      score: "",
+      savedReports: [],
+      isLoggedIn: false,
+      renderedReports: []
+    }
+
     console.log("logout button clicked")
     //Logs User out
     if (this.state.isLoggedIn) {
-      this.setState({
-        isLoggedIn: false
-      });
+      this.setState(revertState);
     }
   }
 
@@ -119,21 +169,26 @@ class App extends React.Component {
               isLoggedIn: true,
               name: userData.name,
               savedReports: userData.savedReports
+            }, () => {
+              this.setState({
+                renderedReports: this.renderReport(this.state.savedReports)
+              })
             });
           } else {
             alert('Invalid login! Try again')
           }
         })
-      } else if (submitType === 'main-page-data-submit') {
-
+      } else if (submitType === 'update-data') {
+        this.setState({
+          renderedReports: this.renderReport(this.state.savedReports)
+        });
       }
     }
   }
 
   render() {
-    const { onInputChange, handleSubmit, onDataSave, onDataSubmit } = this.state;
-    const { name, title, inputData, reportData, savedReports, isLoggedIn } = this.state;
-    const values = { name, title, inputData, reportData, savedReports };
+    const { name, title, inputData, reportData, savedReports, isLoggedIn, renderedReports } = this.state;
+    const values = { name, title, inputData, reportData, savedReports, renderedReports };
 
     if (!isLoggedIn) {
       return (
@@ -150,7 +205,7 @@ class App extends React.Component {
     } else {
       return (
         <Fragment>
-          <Header></Header>
+          <Header isLoggedIn={isLoggedIn} logoutButton={this.logoutButton}></Header>
 
           <MainPage
             onDataSave={this.onDataSave}

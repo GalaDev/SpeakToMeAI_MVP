@@ -30,7 +30,7 @@ export default function Header(props) {
           <Typography variant="h4" className={classes.title}>
             SpeakToMe.ai
           </Typography>
-          <Button color="inherit" onClick={props.logoutButton}>{props.isLoggedIn === true ? 'Logout' : 'Login'}</Button>
+          <Button color="inherit" onClick={props.logoutButton}>{props.isLoggedIn === true ? 'Logout' : 'Welcome'}</Button>
         </Toolbar>
       </AppBar>
     </div>
