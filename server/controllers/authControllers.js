@@ -1,4 +1,4 @@
-const User = require('../models/User.js');
+const { User } = require('../models/User.js');
 const bcrypt = require('bcryptjs');
 
 
@@ -26,8 +26,7 @@ const registerController = (req, res) => {
             name: name,
             email: email,
             username: username,
-            pw: hashedPw,
-            savedReports: []
+            pw: hashedPw
           });
 
           return user.save();
@@ -48,8 +47,6 @@ const loginController = (req, res) => {
   const { username, pw } = req.body;
   console.log('username from client', username)
 
-
-
   User.findOne({ username: username })
     .then(user => {
       if (!user) {
@@ -63,7 +60,7 @@ const loginController = (req, res) => {
         .then(doMatch => {
           if (doMatch) {
             //change value of isLoggedIn object on client
-            console.log('success, loggedin')
+            console.log('success loggedin--from authController')
             const { name, savedReports } = user;
             let userData = { name, savedReports, isLoggedIn: true };
 

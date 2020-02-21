@@ -18,8 +18,8 @@ const reportSchema = new Schema({
     type: String,
     required: true
   },
-  reportData: {
-    type: Object,
+  score: {
+    type: Number,
     required: false
   }
 })
@@ -45,16 +45,12 @@ const userSchema = new Schema({
   savedReports: [reportSchema]
 });
 
-// userSchema.methods.generateHash = function (password) {
-//   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
-// };
-
-// userSchema.methods.validPassword = function (password) {
-//   return bcrypt.compareSync(password, this.password);
-// };
-
-
-module.exports = mongoose.model('User', userSchema);
+const Report = mongoose.model('Report', reportSchema);
+const User = mongoose.model('User', userSchema);
+module.exports = {
+  Report,
+  User
+}
 
 /*
 ================================================================
